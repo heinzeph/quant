@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+
 def human_readable_unit(x):
     """
     Gibt einen Faktor & Label zurück, um Werte schön darzustellen.
@@ -39,15 +40,16 @@ def visualize (df, metric: str) -> None:
     max_val = data.max()
     factor, unit = human_readable_unit(max_val)
 
-    plt.figure(figsize=(10, 6))
-    plt.plot(years, data.values / factor, marker='o')
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.plot(years, data.values / factor, marker='o')
 
-    plt.title(f"{row['label']} [{row['concept']}]", fontsize=14)
-    plt.xlabel("Jahr", fontsize=12)
-    plt.ylabel(f"Wert ({unit})", fontsize=12)
+    ax.set_title(f"{row['label']} [{row['concept']}]", fontsize=14)
+    ax.set_xlabel("Jahr", fontsize=12)
+    ax.set_ylabel(f"Wert ({unit})", fontsize=12)
 
-    plt.xticks(years, rotation=45)
-    plt.grid(True, linestyle='--', alpha=0.7)
-    plt.tight_layout()
-    plt.show()
-    
+    ax.set_xticks(years)
+    ax.set_xticklabels(years, rotation=45)
+    ax.grid(True, linestyle='--', alpha=1)
+    fig.tight_layout()
+
+    return fig
