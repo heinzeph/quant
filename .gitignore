@@ -1,0 +1,12 @@
+# Umgebungsvariablen
+.env
+
+# Python
+__pycache__/
+*.pyc
+
+# VS Code
+.vscode/
+
+# Sonstige
+*.log
