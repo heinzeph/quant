@@ -10,7 +10,7 @@ def main():
     pd.set_option('display.max_rows', None)     # Show all rows
     balance_sheets, income_statements = fetcher.fetch_n_10ks_for_company("NVDA", 12)
     visualizer.visualize(balance_sheets, "Total Assets")
-    print("s")
+    print(balance_sheets)
     
 if __name__ == "__main__":
     main()
