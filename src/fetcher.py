@@ -25,6 +25,7 @@ def fetch_filings():
     return income_df
 
 def fetch_latest_10k(ticker: str):
+
     c = Company(ticker)
     filing = c.get_filings(form="10-K").latest()
     xb =filing.xbrl()
@@ -36,6 +37,7 @@ def fetch_latest_10k(ticker: str):
         balance_sheet.to_dataframe(),
         income_statement.to_dataframe()
     )
+
 def fetch_n_10ks_for_company(ticker: str, n: int):
     """
     Fetches and processes the latest n 10-K filings for a given company ticker.
@@ -59,13 +61,21 @@ def fetch_n_10ks_for_company(ticker: str, n: int):
     balancesheets = []
     for filing in filings:
         xbrl = XBRL.from_filing(filing)
-        income_statement = xbrl.statements.income_statement()
-        balance_sheet = xbrl.statements.balance_sheet()
-        income_statements.append(income_statement.to_dataframe())
-        balancesheets.append(balance_sheet.to_dataframe())
+        income_statement = xbrl.statements.income_statement().to_dataframe()
+        balance_sheet = xbrl.statements.balance_sheet().to_dataframe()
+        income_statement['label'] = income_statement['label'].apply(df_manipulations.normalize_label)
+        balance_sheet['label'] = balance_sheet['label'].apply(df_manipulations.normalize_label)
+        income_statement['concept'] = income_statement['concept'].apply(df_manipulations.normalize_label)
+        balance_sheet['concept'] = balance_sheet['concept'].apply(df_manipulations.normalize_label)
+
+        income_statements.append(income_statement)
+        balancesheets.append(balance_sheet)
     balancesheets_final = df_manipulations.combine_dfs(balancesheets)
     income_statements_final = df_manipulations.combine_dfs(income_statements)
     pd.set_option('display.max_columns', None)  # Show all columns
     pd.set_option('display.max_rows', None)     # Show all rows
     print(balancesheets_final)
     return balancesheets_final, income_statements_final
+
+def fetch_n_10ks_for_m_companies(tickers: list[str], n: int):
+    pass

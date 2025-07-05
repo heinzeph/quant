@@ -44,7 +44,6 @@ def combine_dfs(dfs: list[pd.DataFrame]) -> pd.DataFrame:
     ordered_cols = ["concept", "label", "level", "abstract", "dimension"] + year_cols
     combined_wide = combined_wide[ordered_cols]
     combined_wide = combined_wide.fillna(0)
-    print(type(combined_wide))
     return combined_wide
 
 def extract_metrics_list(df):
@@ -86,9 +85,22 @@ def drop_labels_without_numeric_values(df: pd.DataFrame) -> pd.DataFrame:
     return df_clean
 
 def _is_date(s: str) -> bool:
+
     """Helper function: checks if column name looks like a date (YYYY-MM-DD)."""
     try:
         pd.to_datetime(s, format="%Y-%m-%d")
         return True
     except Exception:
         return False
+
+def normalize_label(label: str) -> str:
+    """
+    Normalisiert ein Label zur Gruppierung.
+    """
+    return (
+        label.lower()
+             .replace("-", " ")
+             .replace("_", " ")
+             .replace(".", " ")
+             .strip()
+    )
