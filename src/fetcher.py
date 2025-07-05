@@ -1,4 +1,3 @@
-from sec_edgar_downloader import Downloader
 from dotenv import load_dotenv
 import os
 import re
