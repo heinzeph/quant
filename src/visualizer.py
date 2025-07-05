@@ -5,6 +5,7 @@ def human_readable_unit(x):
     """
     Gibt einen Faktor & Label zurück, um Werte schön darzustellen.
     """
+    print(x)
     if x >= 1e12:
         return 1e12, 'Bio.'
     elif x >= 1e9:
